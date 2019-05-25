@@ -19,6 +19,8 @@ vector spaces, and linear transformations
 
 ### Video Games
 
+Games require a big bus to render 60fps back and forward. Linear Algebra Operations do not, its more of a batch approach.
+
 ![Starcraft](starcraft.jpg)
 
 ### Circuit Analysis
@@ -35,6 +37,16 @@ The field of signal analysis gives one massively useful tools for encoding, anal
  - Circuit from homework
  - [Google Search Ranking](https://jeremykun.com/2011/06/12/googles-pagerank-introduction/)
  - [Signal Analysis]
+ 
+## Library Links
+
+ - https://developer.nvidia.com/cusparse
+ - https://developer.nvidia.com/cusolver
+ - https://developer.nvidia.com/cublas
+ - http://icl.cs.utk.edu/magma
+ - https://software.intel.com/en-us/mkl
+
+
 
 
 

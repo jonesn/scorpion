@@ -1,4 +1,4 @@
-(ns nz.co.arachnid.scorpion.opencl
+(ns nz.co.arachnid.scorpion.repl.opencl
   (:require [uncomplicate.clojurecl.core :refer :all])
   (:require [uncomplicate.clojurecl.info :refer :all])
   (:require [uncomplicate.commons.core :refer :all]))

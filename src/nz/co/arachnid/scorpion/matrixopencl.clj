@@ -10,8 +10,17 @@
 (set-default-1!)
 (set-engine!)
 
-;; Vector X
+;; =================================
+;;   Some Vectors Backed By The GPU
+;; =================================
 (def x (clv 1 2 3))
+(def y (clv 4 5 6))
+
+;; =================================
+;;       Vector Operations
+;; =================================
+
+(dot x y)
 
 ;; 10 * 10 Matrix
 (def m (clge 10 10))
