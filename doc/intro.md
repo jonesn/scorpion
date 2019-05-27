@@ -25,20 +25,30 @@ Games require a big bus to render 60fps back and forward. Some Linear Algebra Op
 
 ### Circuit Analysis
 
-- Circuit from homework
+![ElectricalNetworks1](electricalnetwork1.jpeg)
+![ElectricalNetworks2](electricalnetwork2.jpeg)
 
 ### Optimisation
+ 
  ![example](milkoptimisation.png)
  - [Desmos Link Showing Geometric Solution](https://www.desmos.com/calculator/yn1p5unyoe)
  - [Google Chap Optimisation](https://jeremykun.com/2014/06/02/linear-programming-and-the-most-affordable-healthy-diet-part-1)
+
+### Google Search Graph
+
+ - ![NotesGoogle](https://rankingteamsandgoogle.png)
+ - ![NotesGoogle](https://rankingteamsandgoogle2.png)
+ - [Google Search Ranking](https://jeremykun.com/2011/06/12/googles-pagerank-introduction/)
+ - [Original Google Paper Stanford](http://infolab.stanford.edu/~backrub/google.html)
+
+ *In this paper, we present Google, a prototype of a large-scale search engine which makes heavy use of the structure present in hypertext. Google is designed to crawl and index the Web efficiently and produce much more satisfying search results than existing systems.*
 
 ### Signal Processing 
 
 The field of signal analysis gives one massively useful tools for encoding, analyzing, and manipulating “signals” that can be audio, images, video, or things like x-rays and light refracting through a crystal. 
 
- - [Google Search Ranking](https://jeremykun.com/2011/06/12/googles-pagerank-introduction/)
- - [Signal Analysis]
- 
+ ---
+
 ## Library Links
 
  - https://developer.nvidia.com/cusparse
