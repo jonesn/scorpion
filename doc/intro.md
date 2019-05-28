@@ -92,14 +92,14 @@ LAPACK was originally written in FORTRAN 77, but moved to Fortran 90 in version 
 ## Implementations
 
 Vendor | Standard | Library | Chip Set
------------- | -----------------------
+-------| ---------|---------|-----
 AMD | BLAS | [Blis](https://developer.amd.com/amd-cpu-libraries/blas-library/) | Instinct
 Apple | OpenCL 1.2 | [Apple Open CL](https://developer.apple.com/opencl) | AMD Vega 
 Intel | BLAS | [Intel MKL](https://software.intel.com/en-us/mkl) | Intel x86
 Nvidia | BLAS | [CUBLAS](https://developer.nvidia.com/cublas) | Tesla/Titan
 
-[Nvidia General Purpose Solvers](https://developer.nvidia.com/cusolver)
-[General Purpose Research Solvers](http://icl.cs.utk.edu/magma)
+ - [Nvidia General Purpose Solvers](https://developer.nvidia.com/cusolver)
+ - [General Purpose Research Solvers](http://icl.cs.utk.edu/magma)
 
 
 
