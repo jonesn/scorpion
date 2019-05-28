@@ -59,15 +59,47 @@ Games require a big bus to render 60fps back and forward. Some Linear Algebra Op
 
 The field of signal analysis gives one massively useful tools for encoding, analyzing, and manipulating “signals” that can be audio, images, video, or things like x-rays and light refracting through a crystal. 
 
- ---
+---
 
-## Library Links
+## Linear Algebra Number Crunching
 
- - https://developer.nvidia.com/cusparse
- - https://developer.nvidia.com/cusolver
- - https://developer.nvidia.com/cublas
- - http://icl.cs.utk.edu/magma
- - https://software.intel.com/en-us/mkl
+## BLAS
+
+The BLAS (Basic Linear Algebra Subprograms) are routines that provide standard building blocks for performing basic vector and matrix operations. The Level 1 BLAS perform scalar, vector and vector-vector operations, the Level 2 BLAS perform matrix-vector operations, and the Level 3 BLAS perform matrix-matrix operations. Because the BLAS are efficient, portable, and widely available, they are commonly used in the development of high quality linear algebra software, LAPACK for example.
+
+It originated as a Fortran library in 1979. Probably some of the most heavily optimized code on the planet.
+
+Used By:
+
+ - MATLAB
+ - Mathmatica
+ - NumPy
+ - R
+ - Julia
+
+### API
+
+![BLASAPI](blasapi1.png)
+
+## LAPACK
+
+The 'high level' big brother.
+
+LAPACK is written in Fortran 90 and provides routines for solving systems of simultaneous linear equations, least-squares solutions of linear systems of equations, eigenvalue problems, and singular value problems. The associated matrix factorizations (LU, Cholesky, QR, SVD, Schur, generalized Schur) are also provided, as are related computations such as reordering of the Schur factorizations and estimating condition numbers. Dense and banded matrices are handled, but not general sparse matrices. In all areas, similar functionality is provided for real and complex matrices, in both single and double precision.
+
+LAPACK was originally written in FORTRAN 77, but moved to Fortran 90 in version 3.2 (2008)
+
+## Implementations
+
+Vendor | Standard | Library | Chip Set
+------------ | -----------------------
+AMD | BLAS | [Blis](https://developer.amd.com/amd-cpu-libraries/blas-library/) | Instinct
+Apple | OpenCL 1.2 | [Apple Open CL](https://developer.apple.com/opencl) | AMD Vega 
+Intel | BLAS | [Intel MKL](https://software.intel.com/en-us/mkl) | Intel x86
+Nvidia | BLAS | [CUBLAS](https://developer.nvidia.com/cublas) | Tesla/Titan
+
+[Nvidia General Purpose Solvers](https://developer.nvidia.com/cusolver)
+[General Purpose Research Solvers](http://icl.cs.utk.edu/magma)
 
 
 
