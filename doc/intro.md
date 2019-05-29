@@ -101,7 +101,31 @@ Nvidia | BLAS | [CUBLAS](https://developer.nvidia.com/cublas) | Tesla/Titan
  - [Nvidia General Purpose Solvers](https://developer.nvidia.com/cusolver)
  - [General Purpose Research Solvers](http://icl.cs.utk.edu/magma)
 
+---
 
+## Java Bindings 
 
+ - The libraries are all C++/Fortran.
+ - Bindings are via JNI and wrapper Java libraries 
+ - These will usually need gcc or the like in place to compile the kernel code.
+ - The entire pipeline is fiddly to setup and get blessed correctly.
+ - I'm using a Clojure library Neanderthal to really mix it up.
+ 
+ [JOCL](http://www.jocl.org/)
+ [JCUDA](http://www.jcuda.org/)
+ [Neanderthal](https://github.com/uncomplicate/neanderthal)
+ 
+--- 
 
+## GPU Engine Architecture 
 
+Much more of the CPU is built of things to do complex control, cache handling, and other things and relatively less area 
+for ALUs (arithmetic logic units.) In the end, GPUs can be incredibly fast 
+when they're given very simple things to do in parallel, like a lot of linear 
+algebra tasks. But they're incredibly slow when complex instructions are 
+involved, especially things like switching statements (if-then-else type things), where CPUs fare much better.
+
+![]
+
+O(n^{3}) (for n × n matrices) for the basic algorithm O(n^{2.373}) for the asymptotically fastest 
+known algorithm.

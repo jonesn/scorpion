@@ -13,11 +13,6 @@
                    :plugins      [[lein-ancient "0.6.15"]]}
              :uberjar {:aot :all}}
 
-  :plugins [[lein-with-env-vars "0.1.0"]]
-
-  :env-vars {
-             :LD_LIBRARY_PATH
-             "/opt/intel/compilers_and_libraries_2019.2.187/linux/mkl/lib/intel64_lin"}
   :repl-options {:init-ns nz.co.arachnid.scorpion.core})
 
 
