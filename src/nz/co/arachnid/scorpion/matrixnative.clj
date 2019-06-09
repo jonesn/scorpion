@@ -1,4 +1,4 @@
-(ns nz.co.arachnid.scorpion.native
+(ns nz.co.arachnid.scorpion.matrixnative
   (:use [uncomplicate.neanderthal core native]))
 
 (def x (dv 1 2 3))
