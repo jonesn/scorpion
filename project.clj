@@ -13,7 +13,8 @@
                    :plugins      [[lein-ancient "0.6.15"]]}
              :uberjar {:aot :all}}
 
-  :repl-options {:init-ns nz.co.arachnid.scorpion.core})
+  :repl-options {:init-ns nz.co.arachnid.scorpion.core
+                 :port    10000})
 
 
 
