@@ -4,13 +4,17 @@
 ;; Intel MKL Version
 
 (defn large-square-matrix-mult
+  "Demo function to do large square Matrix multiplications and time them."
   [n]
   (let [cnt        n
-        matrix-a   (dge cnt cnt (range (* cnt cnt)))
+        matrix-a   (fge cnt cnt (repeat 1))
         matrix-b   (copy matrix-a)
         matrix-c   (copy matrix-a)]
-    (time (do (mm! 3 matrix-a matrix-b 2 matrix-c)
-              matrix-c))))
+    (time
+      (do (mm! 3 matrix-a matrix-b 2 matrix-c)
+          ;; Return the Matrix and the sum of its elements
+          {:sum-of-elements (rationalize (sum matrix-c))
+           :matrix          matrix-c}))))
 
 (comment
   (large-square-matrix-mult 8)
