@@ -3,6 +3,10 @@
             [uncomplicate.neanderthal.opencl :refer :all]
             [uncomplicate.neanderthal.core :refer :all]))
 
+;; ==========================================
+;; Linear Algebra Ops Don't Run on OpenCL 1.2
+;; ==========================================
+
 (defn large-square-matrix-mult
   [n]
   (with-default

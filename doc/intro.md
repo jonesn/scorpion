@@ -65,7 +65,10 @@ The field of signal analysis gives one massively useful tools for encoding, anal
 
 ## BLAS
 
-The BLAS (Basic Linear Algebra Subprograms) are routines that provide standard building blocks for performing basic vector and matrix operations. The Level 1 BLAS perform scalar, vector and vector-vector operations, the Level 2 BLAS perform matrix-vector operations, and the Level 3 BLAS perform matrix-matrix operations. Because the BLAS are efficient, portable, and widely available, they are commonly used in the development of high quality linear algebra software, LAPACK for example.
+The BLAS (Basic Linear Algebra Subprograms) are routines that provide standard building blocks for performing basic vector and matrix operations. 
+ - The Level 1 BLAS perform scalar, vector and vector-vector operations 
+ - The Level 2 BLAS perform matrix-vector operations
+ - The Level 3 BLAS perform matrix-matrix operations. Because the BLAS are efficient, portable, and widely available, they are commonly used in the development of high quality linear algebra software, LAPACK for example.
 
 It originated as a Fortran library in 1979. Probably some of the most heavily optimized code on the planet.
 
@@ -105,15 +108,14 @@ Nvidia | BLAS | [CUBLAS](https://developer.nvidia.com/cublas) | Tesla/Titan
 
 ## Java Bindings 
 
- - The libraries are all C++/Fortran.
- - Bindings are via JNI and wrapper Java libraries 
- - These will usually need gcc or the like in place to compile the kernel code.
- - The entire pipeline is fiddly to setup and get blessed correctly.
- - I'm using a Clojure library Neanderthal to really mix it up.
- 
- [JOCL](http://www.jocl.org/)
- [JCUDA](http://www.jcuda.org/)
- [Neanderthal](https://github.com/uncomplicate/neanderthal)
+- The libraries are all C++/Fortran.
+- Bindings are via JNI and wrapper Java libraries 
+- These will usually need gcc or the like in place to compile the kernel code.
+- The entire pipeline is fiddly to setup and get blessed correctly.
+- I'm using a Clojure library Neanderthal to really mix it up.
+- [JOCL](http://www.jocl.org/)
+- [JCUDA](http://www.jcuda.org/)
+- [Neanderthal](https://github.com/uncomplicate/neanderthal)
  
 --- 
 
@@ -125,7 +127,16 @@ when they're given very simple things to do in parallel, like a lot of linear
 algebra tasks. But they're incredibly slow when complex instructions are 
 involved, especially things like switching statements (if-then-else type things), where CPUs fare much better.
 
-![]
+![GPU](CPU-GPU-Structures1.png)
 
-O(n^{3}) (for n × n matrices) for the basic algorithm O(n^{2.373}) for the asymptotically fastest 
+O(n^{3}) (for n × n matrices) for the basic algorithm O(n^{2.373}) for the fastest 
 known algorithm.
+
+![Matrix Mult](MatrixMultiplication.png)
+
+---
+
+## Interesting Resources
+
+- [3 Blue 1 Brown](https://www.youtube.com/channel/UCYO_jab_esuFRV4b17AJtAw)
+- [Programmers introduction To Mathematics](https://pimbook.org/)

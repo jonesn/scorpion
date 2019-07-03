@@ -1,7 +1,7 @@
 (ns nz.co.arachnid.scorpion.matrixcuda
   (:require [uncomplicate.clojurecuda.core :refer :all]
             [uncomplicate.commons.core :refer :all])
-  (:use [uncomplicate.neanderthal core cuda]))
+  (:use [uncomplicate.neanderthal core cuda linalg]))
 
 (init)
 
@@ -39,4 +39,3 @@
   ;; 8192^3 is 549,755,813,888 1/2 teraflop
   ;; 549 billion
   (large-square-matrix-mult-cuda 8192))
-

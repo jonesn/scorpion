@@ -1,7 +1,9 @@
 (ns nz.co.arachnid.scorpion.matrixnative
-  (:use [uncomplicate.neanderthal core native]))
+  (:use [uncomplicate.neanderthal core native linalg]))
 
+;; =================
 ;; Intel MKL Version
+;; =================
 
 (defn large-square-matrix-mult-native
   "Demo function to do large square Matrix multiplications and time them."
@@ -31,3 +33,21 @@
   ;; 8192^3 is 549,755,813,888 1/2 teraflop
   ;; 549 billion
   (large-square-matrix-mult-native 8192))
+
+;; ===========================================
+;;   Solving a Linear System, Circuit Example
+;; ===========================================
+
+(def coeffecient-matrix (dge 3 3 [1 -1 1
+                                  4  1 0
+                                  0  1 4] {:layout :row}))
+
+(def resulting-matrix (dge 3 1 [0
+                                8
+                                16] {:layout :row}))
+
+(defn solve-linear-system
+  [coeffecient-matrix result-matrix]
+  (sv coeffecient-matrix result-matrix))
+
+(solve-linear-system coeffecient-matrix resulting-matrix)

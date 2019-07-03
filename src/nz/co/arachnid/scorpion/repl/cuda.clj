@@ -38,9 +38,9 @@
 
 (def hello-module (module hello-program))
 
-(def increment (function hello-module "increment"))
+(def multiply2 (function hello-module "increment"))
 
-(launch! increment (grid-1d 256) (parameters 256 gpu-array))
+(launch! multiply2 (grid-1d 256) (parameters 256 gpu-array))
 
 (def result (memcpy-host! gpu-array (float-array 256)))
 
