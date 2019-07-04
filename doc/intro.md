@@ -31,8 +31,7 @@ Games require a big bus to render 60fps back and forward. Some Linear Algebra Op
 
 ### Circuit Analysis
 
-![ElectricalNetworks1](electricalnetwork1.jpeg)
-![ElectricalNetworks2](electricalnetwork2.jpeg)
+[Electrical Networks](linearsystem.pdf)
 
 ---
 
@@ -55,9 +54,14 @@ Games require a big bus to render 60fps back and forward. Some Linear Algebra Op
 
 ---
 
-### Signal Processing 
+### Other Applications 
 
-The field of signal analysis gives one massively useful tools for encoding, analyzing, and manipulating “signals” that can be audio, images, video, or things like x-rays and light refracting through a crystal. 
+ - GPS
+ - Robotics
+ - Neural Networks
+ - Markov Chains (Probability Vectors)
+ - Image Compression
+ - The field of signal analysis gives one massively useful tools for encoding, analyzing, and manipulating “signals” that can be audio, images, video, or things like x-rays and light refracting through a crystal. 
 
 ---
 
