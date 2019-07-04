@@ -149,3 +149,5 @@ known algorithm.
 
 - [3 Blue 1 Brown](https://www.youtube.com/channel/UCYO_jab_esuFRV4b17AJtAw)
 - [Programmers introduction To Mathematics](https://pimbook.org/)
+- [Linear Algebra With Applications](https://www.amazon.com/Linear-Algebra-Applications-Alternate-Mathematics/dp/1449679560/ref=dp_ob_title_bk)
+- [OpenCL In Action](https://www.manning.com/books/opencl-in-action)
