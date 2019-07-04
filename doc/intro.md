@@ -86,7 +86,10 @@ Used By:
 
 ### API
 
+[BLAS Function Naming](https://web.stanford.edu/class/me200c/tutorial_77/18.1_blas.html)
 ![BLASAPI](blasapi1.png)
+
+---
 
 ## LAPACK
 
@@ -107,6 +110,8 @@ Nvidia | BLAS | [CUBLAS](https://developer.nvidia.com/cublas) | Tesla/Titan
 
  - [Nvidia General Purpose Solvers](https://developer.nvidia.com/cusolver)
  - [General Purpose Research Solvers](http://icl.cs.utk.edu/magma)
+ - [Neanderthal Reference LAPACK](https://neanderthal.uncomplicate.org/codox/uncomplicate.neanderthal.linalg.html)
+
 
 ---
 
