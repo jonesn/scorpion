@@ -13,9 +13,3 @@ sudo apt install ocl-icd-opencl-dev
 ## Doc
 
 [Background Theory and Notes](doc/intro.md)
-
-## Todo for Talk
-
- - Matrix mult demo with known sizes.
- - Determinants.
- - Visual VM transfer.
