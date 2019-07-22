@@ -39,3 +39,27 @@
   ;; 8192^3 is 549,755,813,888 1/2 teraflop
   ;; 549 billion
   (large-square-matrix-mult-cuda 8192))
+
+
+;; ===========================================
+;;   Solving a Linear System, Circuit Example
+;; ===========================================
+
+(defn solve-linear-system
+  [coeffecient-matrix result-matrix]
+  (with-default
+    (with-default-engine
+      (with-release
+        [c (cuge 3 3 coeffecient-matrix {:layout :row})
+         r (cuge 3 1 result-matrix      {:layout :row})]
+        (sv c r)))))
+
+(def coeffecient-matrix [1 -1 1
+                         4  1 0
+                         0  1 4])
+
+(def resulting-matrix [0
+                       8
+                       16])
+
+(solve-linear-system coeffecient-matrix resulting-matrix)
