@@ -10,14 +10,11 @@
 
   :profiles {:dev {:source-paths ["dev"]
                    :dependencies [[org.clojure/tools.namespace "0.2.10"]
-                                  [org.clojure/java.classpath   "0.3.0"]
-                                  [walmartlabs/datascope        "0.1.1"]]
+                                  [org.clojure/java.classpath   "0.3.0"]]
                    :plugins      [[lein-ancient "0.6.15"]]}
              :uberjar {:aot :all}}
 
-  ; Required for post 8 jdks on Linux
-  ;:jvm-opts ^:replace ["-Dclojure.compiler.direct-linking=true"
-  ;                     "--add-opens=java.base/jdk.internal.ref=ALL-UNNAMED"]
+  :jvm-opts ^:replace ["-Dclojure.compiler.direct-linking=true"]
 
   :repl-options {:init-ns nz.co.arachnid.scorpion.core
                  :port    10000})
