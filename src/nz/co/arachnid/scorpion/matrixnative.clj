@@ -1,5 +1,7 @@
 (ns nz.co.arachnid.scorpion.matrixnative
-  (:use [uncomplicate.neanderthal core native linalg]))
+  (:use [uncomplicate.neanderthal core native linalg])
+  (:require [clojure.core.protocols :as p])
+  (:import (uncomplicate.neanderthal.internal.host.buffer_block RealGEMatrix)))
 
 ;; =================
 ;; Intel MKL Version
@@ -51,3 +53,14 @@
   (sv coeffecient-matrix result-matrix))
 
 (solve-linear-system coeffecient-matrix resulting-matrix)
+
+(extend-protocol p/Datafiable
+  RealGEMatrix
+  (datafy [x] (seq x)))
+
+(user/rebl-send
+  (large-square-matrix-mult-native 16))
+
+
+
+

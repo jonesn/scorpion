@@ -6,6 +6,8 @@
   :dependencies [[org.clojure/clojure            "1.10.1"]
                  [uncomplicate/neanderthal       "0.25.3"]]
 
+  :resource-paths ["resources/REBL-0.9.172.jar"]
+
   :profiles {:dev {:source-paths ["dev"]
                    :dependencies [[org.clojure/tools.namespace "0.2.10"]
                                   [org.clojure/java.classpath   "0.3.0"]

@@ -5,7 +5,8 @@
             [clojure.repl :refer :all]
             [clojure.test :as test]
             [clojure.tools.namespace.repl :refer :all]
-            [com.walmartlabs.datascope :as ds]))
+            [com.walmartlabs.datascope :as ds]
+            [cognitect.rebl :as rebl]))
 
 (defn list-namespaces
   "Lists all the namespaces on the classpath"
@@ -37,5 +38,10 @@
   [data-structure]
   (ds/view data-structure))
 
+(defn rebl-start
+  []
+  (rebl/ui))
 
-
+(defn rebl-send
+  [expression]
+  (rebl/inspect expression))
