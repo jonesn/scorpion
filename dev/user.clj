@@ -4,9 +4,7 @@
             [clojure.pprint :refer :all]
             [clojure.repl :refer :all]
             [clojure.test :as test]
-            [clojure.tools.namespace.repl :refer :all]))
             [clojure.tools.namespace.repl :refer :all]
-            [com.walmartlabs.datascope :as ds]
             [cognitect.rebl :as rebl]))
 
 (defn list-namespaces
@@ -34,10 +32,6 @@
 (defn repl-reload
   []
   (refresh))
-
-(defn view-data-structure
-  [data-structure]
-  (ds/view data-structure))
 
 (defn rebl-start
   []
