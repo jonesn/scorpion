@@ -40,11 +40,7 @@
   (large-square-matrix-mult-native 512)
   (large-square-matrix-mult-native 1024)
   (large-square-matrix-mult-native 2048)
-  ;; 4096^3 is  68,719,476,736 operations
-  ;; 68 billion
   (large-square-matrix-mult-native 4096)
-  ;; 8192^3 is 549,755,813,888 1/2 teraflop
-  ;; 549 billion
   (large-square-matrix-mult-native 8192))
 
 ;; ===========================================
@@ -61,7 +57,7 @@
 
 (defn solve-linear-system
   [coeffecient-matrix result-matrix]
-  (sv coeffecient-matrix result-matrix))
+  (sv! coeffecient-matrix result-matrix))
 
 (solve-linear-system coeffecient-matrix resulting-matrix)
 
