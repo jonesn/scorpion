@@ -43,9 +43,13 @@
   (large-square-matrix-mult-native 4096)
   (large-square-matrix-mult-native 8192))
 
-;; ===========================================
-;;   Solving a Linear System, Circuit Example
-;; ===========================================
+;; =========================
+;;  Solving a Linear System
+;; =========================
+
+(defn solve-linear-system
+  [coeffecient-matrix result-matrix]
+  (sv coeffecient-matrix result-matrix))
 
 (def coeffecient-matrix (dge 3 3 [1 -1 1
                                   4  1 0
@@ -55,11 +59,8 @@
                                 8
                                 16] {:layout :row}))
 
-(defn solve-linear-system
-  [coeffecient-matrix result-matrix]
-  (sv! coeffecient-matrix result-matrix))
-
-(solve-linear-system coeffecient-matrix resulting-matrix)
+(def answer
+  (solve-linear-system coeffecient-matrix resulting-matrix))
 
 (comment
   (user/rebl-send

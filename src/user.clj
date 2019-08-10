@@ -1,9 +1,6 @@
 (ns user
-  (:require [clojure.java.io :as io]
-            [clojure.string :as str]
-            [clojure.pprint :refer :all]
+  (:require [clojure.pprint :refer :all]
             [clojure.repl :refer :all]
-            [clojure.test :as test]
             [clojure.tools.namespace.repl :refer :all]
             [cognitect.rebl :as rebl]))
 
@@ -34,9 +31,11 @@
   (refresh))
 
 (defn rebl-start
+  "Start a new REBL UI"
   []
   (rebl/ui))
 
 (defn rebl-send
+  "Pipe off the given expression to a running REBL session."
   [expression]
   (rebl/inspect expression))

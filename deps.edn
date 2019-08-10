@@ -2,7 +2,7 @@
         uncomplicate/neanderthal     {:mvn/version "0.25.3"}
         org.clojure/java.classpath   {:mvn/version "0.3.0"}
         org.clojure/tools.namespace  {:mvn/version "0.2.10"}
-        com.cognitect/rebl           {:local/root "resources/REBL-0.9.172.jar"}}
+        com.cognitect/rebl           {:local/root "resources/REBL-0.9.218.jar"}}
  :aliases
        {:rebl
         {:extra-deps
