@@ -26,15 +26,52 @@
 ;; The variables from the slack variable form of the objective or constraint function.
 (s/def ::variables   symbol?)
 
-{:iteration                 0
- :basic-variables           [:x1 :x2 :s1 :s2]
- :objective-coeffecients    [12  16  0  0] ;; cj from video
- :tableaux-row              [{:s1 {:cbi 0
-                                   :constraint-coeffecients [10 12 1 0]
-                                   :solution 0
-                                   :ratio    0}}
-                             {:s2 {:cbi 0
-                                   :constraint-coeffecients [8 8 0 1]
-                                   :solution 0
-                                   :ratio    0}}]
- :constraint-limits         [120 80]}
+;; Zj Row
+;; ======
+
+;; Zj = sum of i = 1..n (cbi[i] * constraint-coeffecients[i,j]
+;; n is the number of (constraint coeffecients + solution).
+;; Zj = [0*10 + 0*8, 0*20+0*8, 0*1+0*0, 0*0+0*1, 0*120+0*80]
+
+;; Maximization Problem
+;; ====================
+;; all Cj - Zj <= 0
+
+;; Minimization Problem
+;; ====================
+;; all Cj - Zj >= 0
+
+(defn- mult-coeffecients-by-scalar
+  [s coeffecients]
+  (map (fn [elem] (* s elem)) coeffecients))
+
+(defn calculate-zj-row
+  "Zj Row
+   ======
+   Zj = sum of i = 1..n (cbi[i] * constraint-coeffecients[i,j]
+   n is the number of (constraint coeffecients + solution)"
+  [tableaux]
+  (let [t-rows           (:tableaux-rows tableaux)
+        cbi*constraints  (map
+                           (fn [row] (mult-coeffecients-by-scalar (:cbi row) (:constraint-coeffecients row)))
+                           t-rows)
+        zj               (apply #(mapv + %1 %2) cbi*constraints)]
+   (merge tableaux {:Zj-row zj})))
+
+
+(comment (def it0 {:iteration                 0
+                   :basic-variables           [:x1 :x2 :s1 :s2]
+                   :objective-coeffecients    [12  16  0  0] ;; cj from video
+                   :tableaux-rows             [{:cbi 0
+                                                :constraint-coeffecients [10 20 1 0]
+                                                :solution 120
+                                                :ratio    0}
+                                               {:cbi 0
+                                                :constraint-coeffecients [8 8 0 1]
+                                                :solution 80
+                                                :ratio    0}]
+                   :constraint-limits         [120 80]
+                   :Zj-row                    [0 0 0 0 0]
+                   :Cj-Zj                     [12 16 0 0]})
+         (def zj-row (calculate-zj-row it0))
+         (reduce #(map + %1 %2)  zj-row))
