@@ -71,7 +71,7 @@
                                                 :solution 80
                                                 :ratio    0}]
                    :constraint-limits         [120 80]
-                   :Zj-row                    [0 0 0 0 0]
+                   :Zj-row                    [0 0 0 0]
                    :Cj-Zj                     [12 16 0 0]})
          (def zj-row (calculate-zj-row it0))
          (reduce #(map + %1 %2)  zj-row))

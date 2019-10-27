@@ -2,6 +2,10 @@
   (:require [midje.sweet :refer :all])
   (:require [nz.co.arachnid.scorpion.simplex :refer :all]))
 
+;; ==========
+;; Iterations
+;; ==========
+
 (def iteration-0
   {:iteration                 0
    :basic-variables           [:x1 :x2 :s1 :s2]
@@ -20,4 +24,6 @@
 
 (facts "Calculate ZJ Row Cases"
        (fact "Given Iteration 0 we will correctly calculate a zero Zj row"
-             (:Zj-row (calculate-zj-row iteration-0)) => [0 0 0 0 0]))
+             (:Zj-row (calculate-zj-row iteration-0)) => [0 0 0 0]))
+
+(facts "Calculate Cj - Zj")
