@@ -42,14 +42,15 @@
 ;; all Cj - Zj >= 0
 
 (defn- mult-coeffecients-by-scalar
-  [s coeffecients]
-  (map (fn [elem] (* s elem)) coeffecients))
+  [n vec-coeffecients]
+  (map (fn [elem] (* n elem)) vec-coeffecients))
 
 (defn calculate-zj-row
   "Zj Row
    ======
-   Zj = sum of i = 1..n (cbi[i] * constraint-coeffecients[i,j]
-   n is the number of (constraint coeffecients + solution)"
+   - Zj = sum of i = 1..n (cbi[i] * constraint-coeffecients[i,j]
+     n is the number of (constraint coeffecients + solution)
+   - The supplied tableaux is updated with the result"
   [tableaux]
   (let [t-rows           (:tableaux-rows tableaux)
         cbi*constraints  (map
@@ -58,6 +59,20 @@
         zj               (apply #(mapv + %1 %2) cbi*constraints)]
    (merge tableaux {:Zj-row zj})))
 
+(defn calculate-cj-zj-row
+  [tableaux]
+  "Zj - Cj Row
+   ===========
+   - Once the Zj row is calculated simply subtracts the Cj row from it.
+     The supplied tableaux is updated with the result"
+  (let [zj-row   (:Zj-row tableaux)
+        cj-row   (:objective-coeffecients tableaux)
+        calc-row (mapv - cj-row zj-row)]
+    (merge tableaux {:Cj-Zj calc-row})))
+
+;; ======================================
+;;        Comment Helper Functions
+;; ======================================
 
 (comment (def it0 {:iteration                 0
                    :basic-variables           [:x1 :x2 :s1 :s2]
@@ -73,5 +88,7 @@
                    :constraint-limits         [120 80]
                    :Zj-row                    [0 0 0 0]
                    :Cj-Zj                     [12 16 0 0]})
-         (def zj-row (calculate-zj-row it0))
+         (def tab1 (calculate-zj-row it0))
+         (def tab2  (calculate-cj-zj-row it0))
+         (clojure.pprint/pprint tab2)
          (reduce #(map + %1 %2)  zj-row))

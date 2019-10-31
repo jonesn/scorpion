@@ -52,7 +52,7 @@
       (with-release
         [c (cuge 3 3 coeffecient-matrix {:layout :row})
          r (cuge 3 1 result-matrix      {:layout :row})]
-        (sv c r)))))
+        (psv c r)))))
 
 (def coeffecient-matrix [1 -1 1
                          4  1 0
@@ -62,4 +62,5 @@
                        8
                        16])
 
-(solve-linear-system coeffecient-matrix resulting-matrix)
+;; cuge doesn't implement the lapack protocol
+;; (solve-linear-system coeffecient-matrix resulting-matrix)
