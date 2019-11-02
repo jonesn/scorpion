@@ -60,21 +60,32 @@
    (merge tableaux {:Zj-row zj})))
 
 (defn calculate-cj-zj-row
-  [tableaux]
   "Zj - Cj Row
    ===========
    - Once the Zj row is calculated simply subtracts the Cj row from it.
      The supplied tableaux is updated with the result"
+  [tableaux]
   (let [zj-row   (:Zj-row tableaux)
         cj-row   (:objective-coeffecients tableaux)
         calc-row (mapv - cj-row zj-row)]
     (merge tableaux {:Cj-Zj calc-row})))
 
+(defn optimal-solution?
+  "- For max problems all Cj-Zj <= 0
+   - For min problems all Cj-Zj >= 0"
+  [tableaux]
+  (let [cj-zj-row     (:Cj-Zj tableaux)
+        problem-type  (:problem-type tableaux)]
+    (or
+      (and (= problem-type :min) (every? (fn [x] (>= x 0)) cj-zj-row))
+      (and (= problem-type :max) (every? (fn [x] (<= x 0)) cj-zj-row)))))
+
 ;; ======================================
 ;;        Comment Helper Functions
 ;; ======================================
 
-(comment (def it0 {:iteration                 0
+(comment (def it0 {:problem-type              :max
+                   :iteration                 0
                    :basic-variables           [:x1 :x2 :s1 :s2]
                    :objective-coeffecients    [12  16  0  0] ;; cj from video
                    :tableaux-rows             [{:cbi 0

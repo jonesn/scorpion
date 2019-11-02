@@ -2,12 +2,13 @@
   (:require [midje.sweet :refer :all])
   (:require [nz.co.arachnid.scorpion.simplex :refer :all]))
 
-;; ==========
-;; Iterations
-;; ==========
+;; ======================
+;; Max Problem Iterations
+;; ======================
 
 (def iteration-0-pre
-  {:iteration                 0
+  {:problem-type              :max
+   :iteration                 0
    :basic-variables           [:x1 :x2 :s1 :s2]
    :objective-coeffecients    [12  16  0  0] ;; cj from video
    :tableaux-rows             [{:cbi 0
@@ -28,3 +29,9 @@
        (fact "Given iteration 0 we will correctly calculate the Cj-Zj row"
              (let [undertest (comp calculate-cj-zj-row calculate-zj-row)]
               (:Cj-Zj (undertest iteration-0-pre)) => [12 16 0 0])))
+
+(facts "Check Optimality"
+       (fact "Given iteration 0 we will deduce that the max optimum has not been meet"
+             (let [undertest (comp optimal-solution? calculate-cj-zj-row calculate-zj-row)]
+               (undertest iteration-0-pre) => false)))
+
