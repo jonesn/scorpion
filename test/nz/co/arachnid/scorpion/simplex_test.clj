@@ -35,3 +35,10 @@
              (let [undertest (comp optimal-solution? calculate-cj-zj-row calculate-zj-row)]
                (undertest iteration-0-pre) => false)))
 
+;; ======================
+;; Min Problem Iterations
+;; ======================
+
+;; ======================
+;;     Zombie Cases
+;; ======================
