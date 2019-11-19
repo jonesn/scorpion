@@ -84,7 +84,7 @@
    - :Cj-Zj"
   [tableaux]
   (let [zj-row   (:Zj-row tableaux)
-        cj-row   (:objective-coeffecients tableaux)
+        cj-row   (:objective-coeffecient-row tableaux)
         calc-row (mapv - cj-row zj-row)]
     (merge tableaux {:Cj-Zj calc-row})))
 
@@ -101,9 +101,8 @@
 
 
 (defn- find-key-value
-  [tableaux row-key when-min-fn-a when-max-fn-b]
-  (let [vec          (row-key tableaux)
-        problem-type (:problem-type tableaux)]
+  [tableaux vec when-min-fn-a when-max-fn-b]
+  (let [problem-type (:problem-type tableaux)]
     (cond
       (= problem-type :min) (apply when-min-fn-a vec)
       (= problem-type :max) (apply when-max-fn-b vec)
@@ -112,12 +111,7 @@
 
 (defn- find-key-column-value
   [tableaux]
-  (find-key-value tableaux :Cj-Zj min max))
-
-
-(defn- find-key-ratio-value
-  [tableaux]
-  (find-key-value tableaux :ratio-column max min))
+  (find-key-value tableaux (:Cj-Zj tableaux) min max))
 
 
 (defn calculate-key-column
@@ -140,16 +134,24 @@
 
 (defn calculate-solution-to-key-val-ratio
   "- Take the solution (s) and key (k) columns and produce a new column of the ratios: s / k
-   ## New Keys
-   - :ratio-column"
+   - The ratios in the Tableaux rows will be updated
+   ## New Keys:
+   - key-ratio-index"
   [tableaux]
   (let [solution-column (:solution-column-value tableaux)
-        key-column      (:key-column-value      tableaux)
-        ratio-column    (mapv
+        key-column      (:key-column-value tableaux)
+        tableaux-rows   (:tableaux-rows tableaux)
+        ratios          (mapv
                           (fn [x y] (/ x y))
                           solution-column
-                          key-column)]
-    (merge {:ratio-column ratio-column} tableaux)))
+                          key-column)
+        updated-tableaux-rows (mapv (fn [map val] (assoc map :ratio val)) tableaux-rows ratios)
+        key-ratio-value (find-key-value tableaux ratios max min)
+        key-ratio-index (first (positions #{key-ratio-value} ratios))]
+    (merge
+      tableaux
+      {:tableaux-rows   updated-tableaux-rows
+       :key-ratio-index key-ratio-index})))
 
 
 (defn calculate-key-row-and-value
@@ -157,48 +159,62 @@
      The selection of the key row is based on the ratio index.
    ## New Keys:
    - :key-row-index
-   - :key-row-value
    - :key-value"
   [tableaux]
-  (let [ratio-column     (:ratio-column tableaux)
-        key-ratio-value  (find-key-ratio-value tableaux)
-        key-ratio-index  (first (positions #{key-ratio-value} ratio-column))
+  (let [key-ratio-index  (:key-ratio-index tableaux)
         key-row          (:constraint-coefficients (nth (:tableaux-rows tableaux) key-ratio-index))
         key-column-index (:key-column-index tableaux)
         key-value        (nth key-row key-column-index)]
-    (merge {:key-row-value key-row
-            :key-row-index key-ratio-index
-            :key-value     key-value} tableaux)))
+    (merge
+      tableaux
+      {:key-row-index key-ratio-index
+       :key-value     key-value})))
+
+
+(defn calculate-entering-and-exiting-variables
+  "- Here we clearly extract the entering and exiting variables for the next iteration.
+     The entering variable is variable in vector :basic-variables that indexed by :key-column-index.
+     The exiting variable is the :active-variable indexed by :key-row-index"
+  [tableaux]
+  (let [key-column-index      (:key-column-index tableaux)
+        basic-variable-row    (:basic-variable-row tableaux)
+        entering-variable     (nth basic-variable-row key-column-index)
+        key-row-index         (:key-row-index tableaux)
+        tableaux-rows         (:tableaux-rows tableaux)
+        row-to-update         (nth tableaux-rows key-row-index)
+        updated-row           (assoc row-to-update :active-variable entering-variable)
+        updated-tableaux-rows (assoc tableaux-rows key-row-index updated-row)]
+    (assoc tableaux :tableaux-rows updated-tableaux-rows)))
 
 ;; ======================================
 ;;        Comment Helper Functions
 ;; ======================================
 
-(comment (def it0 {:problem-type           :max
-                   :iteration              0
-                   :basic-variables        [:x1 :x2 :s1 :s2]
-                   :objective-coeffecients [12 16 0 0] ;; cj from video
-                   :tableaux-rows          [{:cbi                     0
-                                             :constraint-coefficients [10 20 1 0]
-                                             :solution                120
-                                             :ratio                   0}
-                                            {:cbi                     0
-                                             :constraint-coefficients [8 8 0 1]
-                                             :solution                80
-                                             :ratio                   0}]
-                   :solution-column-value  [120 80]
-                   :Zj-row                 [0 0 0 0]
-                   :Cj-Zj                  [12 16 0 0]})
+(comment (def it0 {:problem-type              :max
+                   :iteration                 0
+                   :basic-variable-row        [:x1 :x2 :s1 :s2]
+                   :objective-coeffecient-row [12 16 0 0] ;; cj from video
+                   :tableaux-rows             [{:cbi                     0
+                                                :active-variable         :s1
+                                                :constraint-coefficients [10 20 1 0]
+                                                :solution                120
+                                                :ratio                   0}
+                                               {:cbi                     0
+                                                :active-variable         :s2
+                                                :constraint-coefficients [8 8 0 1]
+                                                :solution                80
+                                                :ratio                   0}]
+                   :solution-column-value  [120 80]})
          (def tab1 (calculate-zj-row it0))
          (def tab2 (calculate-cj-zj-row it0))
          (find-key-column-value it0)
          (def calc-fn1 (comp calculate-key-column calculate-cj-zj-row calculate-zj-row))
-         (def calc-fn2 (comp calculate-key-row-and-value
+         (def calc-fn2 (comp calculate-entering-and-exiting-variables
+                             calculate-key-row-and-value
                              calculate-solution-to-key-val-ratio
                              calculate-key-column
                              calculate-cj-zj-row
                              calculate-zj-row))
          (calc-fn1 it0)
          (calc-fn2 it0)
-         (clojure.pprint/pprint tab2)
-         (reduce #(map + %1 %2)  zj-row))
+         (clojure.pprint/pprint tab2))

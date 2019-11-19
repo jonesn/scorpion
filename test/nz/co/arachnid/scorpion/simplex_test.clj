@@ -7,18 +7,20 @@
 ;; ======================
 
 (def iteration-0-pre
-  {:problem-type           :max
-   :iteration              0
-   :basic-variables        [:x1 :x2 :s1 :s2]
-   :objective-coeffecients [12 16 0 0] ;; cj from video
-   :tableaux-rows          [{:cbi                     0
-                             :constraint-coefficients [10 20 1 0]
-                             :solution                120
-                             :ratio                   0}
-                            {:cbi                     0
-                             :constraint-coefficients [8 8 0 1]
-                             :solution                80
-                             :ratio                   0}]
+  {:problem-type              :max
+   :iteration                 0
+   :basic-variable-row        [:x1 :x2 :s1 :s2]
+   :objective-coeffecient-row [12 16 0 0] ;; cj from video
+   :tableaux-rows             [{:cbi                     0
+                                :active-variable         :s1
+                                :constraint-coefficients [10 20 1 0]
+                                :solution                120
+                                :ratio                   0}
+                               {:cbi                     0
+                                :active-variable         :s2
+                                :constraint-coefficients [8 8 0 1]
+                                :solution                80
+                                :ratio                   0}]
    :solution-column-value  [120 80]})
 
 (facts "Calculate ZJ Row Cases"
@@ -47,8 +49,12 @@
              (let [undertest (comp calculate-solution-to-key-val-ratio
                                    calculate-key-column
                                    calculate-cj-zj-row
-                                   calculate-zj-row)]
-               (:ratio-column (undertest iteration-0-pre)) => [6 10])))
+                                   calculate-zj-row)
+                   result    (undertest iteration-0-pre)]
+               (:key-ratio-index result) => 0
+               (:tableaux-rows result)   => [{:cbi 0, :active-variable :s1 :constraint-coefficients [10 20 1 0], :solution 120, :ratio  6}
+                                             {:cbi 0, :active-variable :s2 :constraint-coefficients [8 8 0 1],   :solution  80, :ratio 10}])))
+
 
 (facts "Calculate Key Row and Key Value"
        (fact "Given iteration 0 we can correctly calculate the key row and key value"
@@ -59,8 +65,20 @@
                                    calculate-zj-row)
                    result    (undertest iteration-0-pre)]
                (:key-row-index result) => 0
-               (:key-row-value result) => [10 20 1 0]
                (:key-value     result) => 20)))
+
+
+(facts "Calculate Entering and Exiting Variables"
+       (fact "Given iteration 0 with the key rows and columns calculated then we can calculate the exiting value."
+             (let [undertest (comp calculate-entering-and-exiting-variables
+                                   calculate-key-row-and-value
+                                   calculate-solution-to-key-val-ratio
+                                   calculate-key-column
+                                   calculate-cj-zj-row
+                                   calculate-zj-row)
+                   result    (undertest iteration-0-pre)]
+               (:tableaux-rows result) => [{:cbi 0, :active-variable :x2 :constraint-coefficients [10 20 1 0], :solution 120, :ratio  6}
+                                           {:cbi 0, :active-variable :s2 :constraint-coefficients [8 8 0 1],   :solution  80, :ratio 10}])))
 
 ;; ======================
 ;; Min Problem Iterations
