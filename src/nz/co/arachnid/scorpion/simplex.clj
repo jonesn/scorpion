@@ -72,7 +72,7 @@
                            (fn [row] (mult-coeffecients-by-scalar (:cbi row) (:constraint-coefficients row)))
                            t-rows)
         zj               (apply #(mapv + %1 %2) cbi*constraints)]
-   (merge tableaux {:Zj-row zj})))
+   (assoc tableaux :Zj-row zj)))
 
 
 (defn calculate-cj-zj-row
@@ -118,18 +118,12 @@
   "- Fox max problems the key column is the cj-zj-row column containing the highest value.
    - For min problems the key column is the cj-zj-row column containing the lowest value.
    ## New Keys:
-   - :key-column-index
-   - :key-column-value"
+   - :key-column-index"
   [tableaux]
   (let [cj-zj-row     (:Cj-Zj tableaux)
         key-value     (find-key-column-value tableaux)
-        column-index  (first (positions #{key-value} cj-zj-row))
-        key-column    (->> (:tableaux-rows tableaux)
-                           (map :constraint-coefficients)
-                           (mapv (fn [v] (nth v column-index))))]
-    (-> tableaux
-        (merge {:key-column-value key-column})
-        (merge {:key-column-index column-index}))))
+        column-index  (first (positions #{key-value} cj-zj-row))]
+    (assoc tableaux :key-column-index column-index)))
 
 
 (defn calculate-solution-to-key-val-ratio
@@ -138,13 +132,16 @@
    ## New Keys:
    - key-ratio-index"
   [tableaux]
-  (let [solution-column (:solution-column-value tableaux)
-        key-column      (:key-column-value tableaux)
-        tableaux-rows   (:tableaux-rows tableaux)
-        ratios          (mapv
-                          (fn [x y] (/ x y))
-                          solution-column
-                          key-column)
+  (let [tableaux-rows    (:tableaux-rows tableaux)
+        solution-column  (map :solution tableaux-rows)
+        key-column-index (:key-column-index tableaux)
+        key-column       (->> (:tableaux-rows tableaux)
+                              (map :constraint-coefficients)
+                              (mapv (fn [v] (nth v key-column-index))))
+        ratios           (mapv
+                           (fn [x y] (/ x y))
+                           solution-column
+                           key-column)
         updated-tableaux-rows (mapv (fn [map val] (assoc map :ratio val)) tableaux-rows ratios)
         key-ratio-value (find-key-value tableaux ratios max min)
         key-ratio-index (first (positions #{key-ratio-value} ratios))]
@@ -203,8 +200,7 @@
                                                 :active-variable         :s2
                                                 :constraint-coefficients [8 8 0 1]
                                                 :solution                80
-                                                :ratio                   0}]
-                   :solution-column-value  [120 80]})
+                                                :ratio                   0}]})
          (def tab1 (calculate-zj-row it0))
          (def tab2 (calculate-cj-zj-row it0))
          (find-key-column-value it0)

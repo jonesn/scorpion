@@ -20,8 +20,29 @@
                                 :active-variable         :s2
                                 :constraint-coefficients [8 8 0 1]
                                 :solution                80
-                                :ratio                   0}]
-   :solution-column-value  [120 80]})
+                                :ratio                   0}]})
+
+(def iteration-0-post
+  {:problem-type :max
+   :iteration 0
+   :basic-variable-row [:x1 :x2 :s1 :s2]
+   :objective-coeffecient-row [12 16 0 0]
+   :tableaux-rows [{:cbi 0
+                    :active-variable :x2
+                    :constraint-coefficients [10 20 1 0],
+                    :solution 120,
+                    :ratio 6}
+                   {:cbi 0
+                    :active-variable :s2
+                    :constraint-coefficients [8 8 0 1],
+                    :solution 80,
+                    :ratio 10}]
+   :Cj-Zj [12 16 0 0]
+   :Zj-row [0 0 0 0]
+   :key-column-index 1
+   :key-value 20
+   :key-ratio-index 0
+   :key-row-index 0})
 
 (facts "Calculate ZJ Row Cases"
        (fact "Given Iteration 0 we will correctly calculate a zero Zj row"
@@ -41,8 +62,7 @@
        (fact "Given iteration 0 we can correctly select the key column"
              (let [undertest (comp calculate-key-column calculate-cj-zj-row calculate-zj-row)
                    result    (undertest iteration-0-pre)]
-               (:key-column-index result) => 1
-               (:key-column-value result) => [20 8])))
+               (:key-column-index result) => 1)))
 
 (facts "Calculate Key Column Ratios"
        (fact "Given iteration 0 we can correctly calculate the s / k ratios"
@@ -78,7 +98,8 @@
                                    calculate-zj-row)
                    result    (undertest iteration-0-pre)]
                (:tableaux-rows result) => [{:cbi 0, :active-variable :x2 :constraint-coefficients [10 20 1 0], :solution 120, :ratio  6}
-                                           {:cbi 0, :active-variable :s2 :constraint-coefficients [8 8 0 1],   :solution  80, :ratio 10}])))
+                                           {:cbi 0, :active-variable :s2 :constraint-coefficients [8 8 0 1],   :solution  80, :ratio 10}]
+                                result => iteration-0-post)))
 
 ;; ======================
 ;; Min Problem Iterations
