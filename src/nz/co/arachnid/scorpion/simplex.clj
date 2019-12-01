@@ -41,8 +41,8 @@
 ;; ====================
 ;; all Cj - Zj >= 0
 
-;; Helper Functions
-;; ================
+;; Helper Functions Private
+;; ========================
 
 (defn- positions
   [pred coll]
@@ -54,6 +54,62 @@
 (defn- mult-coeffecients-by-scalar
   [n vec-coeffecients]
   (map (fn [elem] (* n elem)) vec-coeffecients))
+
+;; Helper Functions Public
+;; =======================
+
+(defn calculate-entering-row
+  [old-row key-element]
+  (let [constraint-coefficients (:constraint-coefficients old-row)
+        new-coeffecients        (mapv (fn [x] (/ x key-element)) constraint-coefficients)
+        new-solution            (/ (:solution old-row) key-element)]
+    (merge old-row {:constraint-coefficients new-coeffecients
+                    :solution                new-solution
+                    :ratio                   1})))
+
+(defn calculate-non-entering-value
+  [old-val corresponding-key-col-val corresponding-key-row-val key-element]
+  (- old-val
+     (/ (* corresponding-key-col-val corresponding-key-row-val)
+        key-element)))
+
+(defn calculate-non-entering-row
+  [tableaux-row
+   previous-iteration-key-row
+   key-row-index
+   key-column-index
+   current-row-index
+   key-element]
+  (if (= current-row-index key-row-index)
+    ;; then
+    tableaux-row
+    ;; else
+    (let [constraint-coefficients (:constraint-coefficients tableaux-row)
+          updated-coefficients    (vec
+                                   (map-indexed
+                                     (fn [index element]
+                                       (calculate-non-entering-value
+                                         element
+                                         (nth constraint-coefficients key-column-index)
+                                         (nth previous-iteration-key-row index)
+                                         key-element))
+                                     constraint-coefficients))]
+      (merge tableaux-row {:constraint-coefficients updated-coefficients}))))
+
+
+(defn calculate-non-entering-rows
+  [tableaux-rows previous-iteration-key-row key-row-index key-column-index key-element]
+  (map-indexed
+    (fn [current-row-index row]
+      (calculate-non-entering-row
+        row
+        previous-iteration-key-row
+        key-row-index
+        key-column-index
+        current-row-index
+        key-element))
+    tableaux-rows))
+
 
 ;;  Main Functions
 ;; ================
@@ -165,23 +221,51 @@
     (merge
       tableaux
       {:key-row-index key-ratio-index
-       :key-value     key-value})))
+       :key-element   key-value})))
 
 
 (defn calculate-entering-and-exiting-variables
   "- Here we clearly extract the entering and exiting variables for the next iteration.
      The entering variable is variable in vector :basic-variables that indexed by :key-column-index.
-     The exiting variable is the :active-variable indexed by :key-row-index"
+     The exiting variable is the :active-variable indexed by :key-row-index
+     ## New Keys:
+     - :entering-variable
+     - :exiting-variable"
   [tableaux]
   (let [key-column-index      (:key-column-index tableaux)
         basic-variable-row    (:basic-variable-row tableaux)
         entering-variable     (nth basic-variable-row key-column-index)
         key-row-index         (:key-row-index tableaux)
         tableaux-rows         (:tableaux-rows tableaux)
-        row-to-update         (nth tableaux-rows key-row-index)
-        updated-row           (assoc row-to-update :active-variable entering-variable)
-        updated-tableaux-rows (assoc tableaux-rows key-row-index updated-row)]
-    (assoc tableaux :tableaux-rows updated-tableaux-rows)))
+        exiting-variable      (:active-variable (nth tableaux-rows key-row-index))]
+    (merge tableaux {:entering-variable entering-variable
+                     :exiting-variable  exiting-variable})))
+
+(defn setup-next-iteration
+  [tableaux]
+  (let [key-element             (:key-element tableaux)
+        key-column-index        (:key-column-index tableaux)
+        key-row-index           (:key-row-index tableaux)
+        tableaux-rows           (:tableaux-rows tableaux)
+        entering-variable       (:entering-variable tableaux)
+        coeffecient-row         (:objective-coeffecient-row tableaux)
+        entering-coeffecient    (nth coeffecient-row key-column-index)
+        entering-row-to-update  (nth tableaux-rows key-row-index)
+        updated-entering-row-s1 (merge entering-row-to-update
+                                       {:active-variable entering-variable
+                                        :cbi             entering-coeffecient})
+        updated-entering-row-s2 (calculate-entering-row updated-entering-row-s1 key-element)
+        updated-tableaux-rows   (assoc tableaux-rows key-row-index updated-entering-row-s2)]))
+
+
+;coeffecient-row       (:objective-coeffecient-row tableaux)
+;entering-coeffecient  (nth coeffecient-row key-column-index)
+;tableaux-rows         (:tableaux-rows tableaux)
+;row-to-update         (nth tableaux-rows key-row-index)
+;updated-row           (merge row-to-update
+;                             {:active-variable entering-variable
+;                              :cbi             entering-coeffecient})
+;updated-tableaux-rows (assoc tableaux-rows key-row-index updated-row)
 
 ;; ======================================
 ;;        Comment Helper Functions
@@ -213,4 +297,15 @@
                              calculate-zj-row))
          (calc-fn1 it0)
          (calc-fn2 it0)
-         (clojure.pprint/pprint tab2))
+         (clojure.pprint/pprint tab2)
+         (reduce apply #(mapv (fn [x] (* 2 x)) %1) [[1 2] [3 4]])
+         (def rows-to-reduce [{:cbi 16, :active-variable :x1, :constraint-coefficients [1/2 1 1/20 0], :solution 6, :ratio 1}
+                              {:cbi 0, :active-variable :s2, :constraint-coefficients [8 8 0 1], :solution 80, :ratio 10}])
+         (calculate-non-entering-row
+           {:cbi 0, :active-variable :s2, :constraint-coefficients [8 8 0 1], :solution 80, :ratio 10}
+           [10 20 1 0]
+           0
+           1
+           1
+           20)
+         (calculate-non-entering-rows [8 8 0 1] [10 20 1 0] 0 1 20))
