@@ -84,17 +84,26 @@
     ;; then
     tableaux-row
     ;; else
-    (let [constraint-coefficients (:constraint-coefficients tableaux-row)
-          updated-coefficients    (vec
-                                   (map-indexed
-                                     (fn [index element]
-                                       (calculate-non-entering-value
-                                         element
-                                         (nth constraint-coefficients key-column-index)
-                                         (nth previous-iteration-key-row index)
-                                         key-element))
-                                     constraint-coefficients))]
-      (merge tableaux-row {:constraint-coefficients updated-coefficients}))))
+    (let [current-constraint-coefficients (:constraint-coefficients tableaux-row)
+          key-row-coefficients            (:constraint-coefficients previous-iteration-key-row)
+          updated-coefficients            (vec
+                                            (map-indexed
+                                              (fn [index element]
+                                                (calculate-non-entering-value
+                                                  element
+                                                  (nth current-constraint-coefficients key-column-index)
+                                                  (nth key-row-coefficients index)
+                                                  key-element))
+                                              current-constraint-coefficients))
+          current-solution                (:solution tableaux-row)
+          key-row-solution                (:solution previous-iteration-key-row)
+          updated-key-row                 (calculate-non-entering-value
+                                            current-solution
+                                            (nth current-constraint-coefficients key-column-index)
+                                            key-row-solution
+                                            key-element)]
+      (merge tableaux-row {:constraint-coefficients updated-coefficients
+                           :solution                updated-key-row}))))
 
 
 (defn calculate-non-entering-rows
@@ -303,7 +312,7 @@
                               {:cbi 0, :active-variable :s2, :constraint-coefficients [8 8 0 1], :solution 80, :ratio 10}])
          (calculate-non-entering-row
            {:cbi 0, :active-variable :s2, :constraint-coefficients [8 8 0 1], :solution 80, :ratio 10}
-           [10 20 1 0]
+           {:cbi 0, :active-variable :s1, :constraint-coefficients [10 20 1 0], :solution 120, :ratio 0}
            0
            1
            1

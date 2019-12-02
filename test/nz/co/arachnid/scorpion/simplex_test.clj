@@ -121,13 +121,13 @@
 
 (facts "Calculate Non Entering Rows will update all non key rows ready for next iteration."
        (fact "Given a well form vector of rows the function can correctly calculate new rows"
-             (let [previous-key-row [10 20 1 0]
+             (let [previous-key-row {:cbi 0, :active-variable :s1 :constraint-coefficients [10 20 1 0], :solution 120, :ratio  6}
                    key-element      20
                    key-row-index    0
                    input            [{:cbi 16, :active-variable :x1, :constraint-coefficients [1/2 1 1/20 0], :solution 6, :ratio 1}
                                      {:cbi 0, :active-variable :s2, :constraint-coefficients [8 8 0 1], :solution 80, :ratio 10}]]
                (calculate-non-entering-rows input previous-key-row key-row-index 0 key-element) => [{:cbi 16, :active-variable :x1, :constraint-coefficients [1/2 1 1/20 0], :solution  6, :ratio 1}
-                                                                                                    { :cbi 0, :active-variable :s2, :constraint-coefficients [  4 0 -2/5 1], :solution 32, :ratio 10}])))
+                                                                                                    {:cbi  0, :active-variable :s2, :constraint-coefficients [  4 0 -2/5 1], :solution 32, :ratio 10}])))
 
 ;; ======================
 ;;     Zombie Cases
